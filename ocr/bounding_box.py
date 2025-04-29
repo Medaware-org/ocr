@@ -17,8 +17,9 @@ def visualise_bounding_boxes(images: str | list[str]):
 
         result = read(img_cv2, detail=True)
         print(result)
-
+        # img_text = ""
         for box, text, cl in result:
+            # img_text += f"{text} "
             if len(box) != 4:
                 print("Box has not 4 points!", box)
                 continue
@@ -35,6 +36,7 @@ def visualise_bounding_boxes(images: str | list[str]):
             # draws the bounding box (rectangle) on the image
             cv2.rectangle(img_cv2, (x_min, y_min), (x_max, y_max), color=(255, 0, 0), thickness=2)
 
+        # print(img_text)
         cv2.imshow("Bounding Boxes", img_cv2)
 
         cv2.waitKey(0)

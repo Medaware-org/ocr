@@ -14,3 +14,8 @@ def read(image, detail=False) -> list[tuple[list[list[int]]], str, float] | list
     :return:
     """
     return reader.readtext(image, detail=detail, rotation_info=[90, 180, 270])
+
+
+if __name__ == '__main__':
+    text: list[str] = read("./images/text_01.png", detail=False)
+    print(text)
