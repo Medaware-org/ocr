@@ -3,6 +3,8 @@ from flask_cors import CORS
 from waitress import serve
 import os
 from dotenv import load_dotenv
+from dinov2.labels import classes
+from dinov2.predict_02 import predict
 from ocr.ocr import read, lang_list
 
 app = Flask(__name__)
@@ -29,6 +31,7 @@ def return_home():
 
 
 img_ext = ('.png', '.jpg', '.jpeg', '.bmp', '.tiff')
+# todo check if everywhere where img_ext is checked the img_ext aren't hardcoded
 
 
 @app.route('/api/support/img_ext', methods=['GET'])
@@ -60,8 +63,16 @@ def post_ocr():
 @app.route('/api/cnn', methods=['POST'])
 def post_cnn():
     posted_file = request.files['data']  # file
-    print(posted_file)
+    # print(posted_file)
+    # img_bytes = posted_file.read()
+    # output, scores = predict(img_bytes)
+    # return jsonify({"output": output, "scores": scores})
     return jsonify({"data": posted_file.content_type})  # response works
+
+
+@app.route('/api/cnn/support/labels', methods=['GET'])
+def get_labels_ghs():
+    return jsonify({"data": classes})  # response works
 
 
 if __name__ == "__main__":
