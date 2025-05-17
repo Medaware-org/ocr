@@ -2,6 +2,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from waitress import serve
 import os
+import numpy as np
+from PIL import Image
 from dotenv import load_dotenv
 from dinov2.labels import classes
 from dinov2.predict_02 import predict
@@ -63,11 +65,15 @@ def post_ocr():
 @app.route('/api/cnn', methods=['POST'])
 def post_cnn():
     posted_file = request.files['data']  # file
-    # print(posted_file)
-    # img_bytes = posted_file.read()
-    # output, scores = predict(img_bytes)
-    # return jsonify({"output": output, "scores": scores})
-    return jsonify({"data": posted_file.content_type})  # response works
+
+    if not posted_file.filename.lower().endswith(img_ext):
+        return "Invalid file type", 403
+
+    img = np.fromfile(posted_file, dtype=np.uint8)
+    output, scores = predict(img)
+    scores = {key: float(value) for key, value in scores.items()}
+
+    return jsonify({"output": output, "scores": scores}) # response works
 
 
 @app.route('/api/cnn/support/labels', methods=['GET'])

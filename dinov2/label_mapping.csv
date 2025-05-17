@@ -1,0 +1,10 @@
+ label,mapping_num,notes,file
+ Flammable,0,flame,images/compare_items/.../ghs_01.png
+ Corrosive,1,acid,images/compare_items/.../ghs_02.png
+ Explosive,2,explosive,images/compare_items/.../ghs_03.png
+ Hazardous to the Environment,3,fish and tree,images/compare_items/.../ghs_04.png
+ Oxidizing,4,flame with circle,images/compare_items/.../ghs_05.png
+ Toxic,5,"skull, death's head",images/compare_items/.../ghs_06.png
+ Health Hazard/Hazardous to Ozone Layer,6,exclamation mark,images/compare_items/.../ghs_07.png
+ Compressed Gas,7,gas tank,images/compare_items/.../ghs_08.png
+ Serious Health hazard,8,body,images/compare_items/.../ghs_09.png

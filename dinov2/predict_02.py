@@ -79,7 +79,11 @@ def show_result(dicti: dict):
 
 
 def img_path_to_image(image_path, mode: PredictMode = PredictMode.NORMAL) -> Image.Image:
-    image = cv2.imread(image_path)
+    try:  # filepath
+        image = cv2.imread(image_path)
+    except:  # ndarray
+        image = cv2.imdecode(image_path, cv2.IMREAD_COLOR)
+
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     if mode == PredictMode.CANNY:
@@ -95,7 +99,7 @@ def predict_mode(image, mode: PredictMode = PredictMode.NORMAL):
     print(image)
     path = ""
     if mode is None or mode == PredictMode.NORMAL or mode == PredictMode.CANNY:
-        path = "dinov2/images/compare_items/ghs"
+        path = "dinov2/images/compare_items/ghs"  # todo problems with path depending on what location file is running
     if mode == PredictMode.PHOTO:
         path = "dinov2/images/compare_items/photos"  # "images/compare_items/photos"
 
@@ -113,9 +117,13 @@ def predict_mode(image, mode: PredictMode = PredictMode.NORMAL):
     return label, dict(zip(classes, scores))
 
 
-def predict(image_path):
+def predict(image_path: str | np.ndarray):
+    """
+    :param image_path: filename or rather (path to file) or ndarray; not valid is a byte string
+    :return: label of the predicted, scores per label
+    """
     n_label, n_score = predict_mode(image_path, mode=PredictMode.NORMAL)
-    # p_label, p_score = predict_mode(image_path, mode=PredictMode.PHOTO) # todo photo img data
+    p_label, p_score = predict_mode(image_path, mode=PredictMode.PHOTO)  # todo photo img data
     c_label, c_score = predict_mode(image_path, mode=PredictMode.CANNY)
     print(n_label, n_score)
     # print(p_label, p_score)
@@ -166,4 +174,6 @@ def similarity(image1_path, image2_path, mode: PredictMode = PredictMode.NORMAL)
     image2_path = img_path_to_image(image2_path, mode=mode)
     return compute_similarity(image1_path, image2_path)
 
-# print(predict("images/test/signal_ghs_test_13.jpeg"))
+
+if __name__ == '__main__':
+    print(predict("images/test/signal_ghs_test_13.jpeg"))
