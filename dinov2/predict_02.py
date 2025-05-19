@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import cv2
 import os
+from typing import Union
 
 from dinov2.labels import get_label
 from dinov2.labels import classes
@@ -21,7 +22,7 @@ model = AutoModel.from_pretrained("facebook/dinov2-base")
 model.eval()
 
 # --- Step 2: Function to load and process an image ---
-def process_image(image: Image.Image | np.ndarray):
+def process_image(image: Union[Image.Image, np.ndarray]):
     """
     :param image: image path is NOT allowed here
     """
@@ -117,7 +118,7 @@ def predict_mode(image, mode: PredictMode = PredictMode.NORMAL):
     return label, dict(zip(classes, scores))
 
 
-def predict(image_path: str | np.ndarray):
+def predict(image_path: Union[str, np.ndarray]):
     """
     :param image_path: filename or rather (path to file) or ndarray; not valid is a byte string
     :return: label of the predicted, scores per label

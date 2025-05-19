@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from dinov2.labels import classes
 from dinov2.predict_02 import predict
 from ocr.ocr import read, lang_list
+from typing import Union
 
 app = Flask(__name__)
 CORS(app)
