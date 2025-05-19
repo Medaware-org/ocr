@@ -138,7 +138,7 @@ def predict(image_path: Union[str, np.ndarray]):
         d['CANNY'] = c_score
         d['MERGED'] = merged_scores
         # show_result(d)
-        return n_label, merged_scores
+        return n_label[0], merged_scores
     # todo
     max_key = max(merged_scores, key=merged_scores.get)
     return max_key, merged_scores
