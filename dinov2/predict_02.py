@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import cv2
 import os
+from typing import Union
 
 from dinov2.labels import get_label
 from dinov2.labels import classes
@@ -26,7 +27,7 @@ model.eval()
 
 
 # --- Step 2: Function to load and process an image ---
-def process_image(image: Image.Image | np.ndarray):
+def process_image(image: Union[Image.Image, np.ndarray]):
     """
     :param image: image path is NOT allowed here
     """
@@ -129,7 +130,7 @@ def predict_mode(image, mode: PredictMode = PredictMode.NORMAL):
     return label, dict(zip(classes, scores))
 
 
-def predict(image_path: str | np.ndarray):
+def predict(image_path: Union[str, np.ndarray]):
     """
     :param image_path: filename or rather (path to file) or ndarray; not valid is a byte string
     :return: label of the predicted, scores per label
@@ -144,7 +145,7 @@ def predict(image_path: str | np.ndarray):
     print("ROTATED", r_label, r_score)
 
     merged_scores = merge_scores([n_score, c_score, p_score, r_score])
-    if True: # n_label == c_label:  # == p_label
+    if n_label == c_label == p_label == r_label:
         print(n_label, merged_scores)  # todo
         d = {}
         d['NORMAL'] = n_score
@@ -152,9 +153,8 @@ def predict(image_path: str | np.ndarray):
         d['PHOTO'] = p_score
         d['ROTATED'] = r_score
         d['MERGED'] = merged_scores
-        show_result(d)
-        return n_label, merged_scores
-    # todo
+        # show_result(d)
+        # todo
     max_key = max(merged_scores, key=merged_scores.get)
     return [max_key], merged_scores
 

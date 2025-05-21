@@ -3,7 +3,7 @@ import numpy as np
 from ocr import read
 
 
-def visualise_bounding_boxes(images: str | list[str]):
+def visualise_bounding_boxes(images: Union[str, list[str]]):
     if isinstance(images, str):
         images = [images]
 
