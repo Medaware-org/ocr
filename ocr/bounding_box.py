@@ -43,4 +43,5 @@ def visualise_bounding_boxes(images: Union[str, list[str]]):
         cv2.destroyAllWindows()
 
 
-visualise_bounding_boxes("images/text_04.png")
+# visualise_bounding_boxes("images/text_04.png")
+visualise_bounding_boxes("images/ocr_ingredient_test_file.jpeg")
