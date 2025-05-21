@@ -50,8 +50,8 @@ def test(fix_img: str, images: list, visualisation=True, mode=PredictMode.NORMAL
 
 
 files = ["images/test/signal_ghs_test_17.jpeg", "images/test/signal_ghs_test_13.jpeg",
-         "images/test/signal_ghs_test_07.jpeg", "images/compare_items/ghs_07.png"]
-fix = "images/compare_items/ghs_07.png"
+         "images/test/signal_ghs_test_07.jpeg", "images/compare_items/ghs/ghs_07.png"]
+fix = "images/compare_items/ghs/ghs_07.png"
 #test(fix, files, True)
 test(fix, files, True, mode=PredictMode.CANNY)
 test(fix, files, True, mode=PredictMode.NORMAL)
