@@ -138,23 +138,25 @@ def predict(image_path: str | np.ndarray):
     p_label, p_score = predict_mode(image_path, mode=PredictMode.PHOTO)  # todo photo img data
     c_label, c_score = predict_mode(image_path, mode=PredictMode.CANNY)
     r_label, r_score = predict_mode(image_path, mode=PredictMode.ROTATION180)
-    print(n_label, n_score)
-    print(p_label, p_score)
-    print(c_label, c_score)
-    print(r_label, r_score)
+    print("NORMAL", n_label, n_score)
+    print("PHOTO", p_label, p_score)
+    print("CANNY", c_label, c_score)
+    print("ROTATED", r_label, r_score)
 
-    merged_scores = merge_scores([n_score, c_score, p_score])
-    if n_label == c_label:  # == p_label
+    merged_scores = merge_scores([n_score, c_score, p_score, r_score])
+    if True: # n_label == c_label:  # == p_label
         print(n_label, merged_scores)  # todo
         d = {}
         d['NORMAL'] = n_score
         d['CANNY'] = c_score
+        d['PHOTO'] = p_score
+        d['ROTATED'] = r_score
         d['MERGED'] = merged_scores
-        # show_result(d)
+        show_result(d)
         return n_label, merged_scores
     # todo
     max_key = max(merged_scores, key=merged_scores.get)
-    return max_key, merged_scores
+    return [max_key], merged_scores
 
 
 def merge_scores(scores: list[dict], weights: list[np.float32] = None):
@@ -162,9 +164,15 @@ def merge_scores(scores: list[dict], weights: list[np.float32] = None):
     labels = classes.copy()
     for label in labels:
         scores_per_label = []
-        for score in scores:
-            scores_per_label.append(score[label])
-        scores_dict[label] = (sum(scores_per_label) / len(scores_per_label))
+        for i, score in enumerate(scores):
+            weight = weights[i] if weights is not None else 1
+            scores_per_label.append(score[label] * weight)
+
+        if weights is not None:
+            scores_dict[label] = sum(scores_per_label)
+        elif weights is None:
+            scores_dict[label] = (sum(scores_per_label) / len(scores_per_label))
+
     return scores_dict
 
 
@@ -190,6 +198,6 @@ def similarity(image1_path, image2_path, mode: PredictMode = PredictMode.NORMAL)
 
 
 if __name__ == '__main__':
-    # print(predict("images/resources/ghs_test_image_exclamation_mark_rotated_180_degree.jpeg"))
-    print(predict(BASE_DIR / "images/resources/ghs_test_image_fire_rotated_180_degree.jpeg"))
-    # print(predict("images/test/signal_ghs_test_13.jpeg"))
+    print(predict(f'{BASE_DIR / "images/resources/ghs_test_image_exclamation_mark_rotated_180_degree.jpeg"}'))
+    print(predict(f'{BASE_DIR / "images/resources/ghs_test_image_fire_rotated_180_degree.jpeg"}'))
+    print(predict(f'{BASE_DIR / "images/test/signal_ghs_test_13.jpeg"}'))

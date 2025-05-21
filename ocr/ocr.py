@@ -13,7 +13,7 @@ def read(image, detail=False) -> list[tuple[list[list[int]]], str, float] | list
     :param detail: False | True -> False = text; Ture = bounding box, detected text and confident level
     :return:
     """
-    return reader.readtext(image, detail=detail, rotation_info=[90, 180, 270])
+    return reader.readtext(image, detail=detail)  # , rotation_info=[90, 180, 270])
 
 
 if __name__ == '__main__':
